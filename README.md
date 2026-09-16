@@ -32,8 +32,8 @@
 
 ## 실습 환경
 
-Docker Compose 로 Airflow 와 Spark 를 macOS 한 대에 띄우고, 데이터는 S3 버킷 de-3-jeonghyejeong 을 사용했다.
+Airflow 3.3.1 공식 compose 를 커스텀 이미지로 바꿔 띄웠고, Spark 는 master 1 대 + worker 2 대 Standalone 으로 구성했다. 전 과정을 macOS 한 대에서 진행했으며, 데이터는 S3 버킷 de-3-jeonghyejeong 을 사용했다.
 
 ## 회고
 
-S3 → Spark → S3 로 이어지는 파이프라인을 DAG 하나로 묶으면서 task 분리의 이유를 알게 되었다.
+XCom 과 catchup 의 동작을 직접 눈으로 확인하면서 Airflow 스케줄링의 개념이 정리되었다. S3 → Spark → S3 로 이어지는 파이프라인을 DAG 하나로 묶으면서 task 를 분리하는 이유도 알게 되었다.
