@@ -1,0 +1,13 @@
+# Q5 — 커스텀 Airflow 이미지에 추가로 설치할 파이썬 패키지
+
+# AWS provider  : S3Hook, AWS Connection (Q1 · Q8 · Q9)
+apache-airflow-providers-amazon
+
+# Spark provider: SparkSubmitOperator (Q2 · Q9)
+apache-airflow-providers-apache-spark
+
+# pyspark       : Airflow 컨테이너 안에서 spark-submit 을 쓰기 위해 필요
+pyspark>=3.5,<4.0
+
+# PostgreSQL provider: PostgresHook (Q1-(3))
+apache-airflow-providers-postgres
