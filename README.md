@@ -32,8 +32,8 @@
 
 ## 실습 환경
 
-이번 주차 실습은 Docker Compose 로 Airflow 와 Spark Standalone 클러스터를 한 대의 머신에 띄워 진행했다.
+Docker Compose 로 Airflow 와 Spark 를 macOS 한 대에 띄우고, 데이터는 S3 버킷 de-3-jeonghyejeong 을 사용했다.
 
 ## 회고
 
-이번 주차에는 Airflow 와 Spark, S3 를 하나의 파이프라인으로 잇는 과정을 익혔다.
+S3 → Spark → S3 로 이어지는 파이프라인을 DAG 하나로 묶으면서 task 분리의 이유를 알게 되었다.
