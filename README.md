@@ -32,8 +32,8 @@
 
 ## 실습 환경
 
-이번 주차 실습은 Docker Compose 로 Airflow 와 Spark Standalone 클러스터를 한 대의 머신에 띄워 진행했다.
+Airflow 3.3.1 공식 compose 를 커스텀 이미지로 바꿔 띄웠고, Spark 는 master 1 대 + worker 2 대 Standalone 으로 구성했다.
 
 ## 회고
 
-이번 주차에는 Airflow 와 Spark, S3 를 하나의 파이프라인으로 잇는 과정을 익혔다.
+XCom 과 catchup 의 동작을 직접 눈으로 확인하면서 Airflow 스케줄링의 개념이 정리되었다.
