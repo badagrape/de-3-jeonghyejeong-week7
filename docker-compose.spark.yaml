@@ -1,0 +1,82 @@
+# Q4 — Spark Standalone 클러스터 (master 1 대 + worker 2 대)
+#
+# 실행
+#   docker compose -f docker-compose.spark.yaml up -d
+#   docker compose -f docker-compose.spark.yaml ps
+#
+# Master Web UI : http://localhost:8081
+#
+# 잡 제출 (컨테이너에 접속해서 spark-submit)
+#   docker compose -f docker-compose.spark.yaml exec spark-master \
+#     /opt/spark/bin/spark-submit \
+#       --master spark://spark-master:7077 \
+#       --name WordCount_정혜정 \
+#       --conf spark.driver.host=spark-master \
+#       /opt/spark-jobs/wordcount.py /opt/spark-data/wordcount.txt
+#
+# 메모리가 부족하면 spark-worker-2 블록을 지우고 worker 1 대로 줄여도 된다.
+
+services:
+  spark-master:
+    image: apache/spark:3.5.9
+    container_name: spark-master-jeonghyejeong
+    user: root
+    command: >
+      /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+      --host spark-master --port 7077 --webui-port 8080
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+    ports:
+      - "8081:8080"     # Master Web UI (Airflow 가 8080 을 쓰므로 8081 로 노출)
+      - "7077:7077"     # Master RPC
+      - "4040:4040"     # Driver(Application) UI
+    volumes:
+      - ./jobs:/opt/spark-jobs
+      - ./data:/opt/spark-data
+    networks:
+      - spark-net
+
+  spark-worker-1:
+    image: apache/spark:3.5.9
+    container_name: spark-worker-1-jeonghyejeong
+    user: root
+    depends_on:
+      - spark-master
+    command: >
+      /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker
+      spark://spark-master:7077
+      --cores 1 --memory 2G --webui-port 8080
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+    ports:
+      - "8082:8080"     # Worker 1 Web UI
+    volumes:
+      - ./jobs:/opt/spark-jobs
+      - ./data:/opt/spark-data
+    networks:
+      - spark-net
+
+  spark-worker-2:
+    image: apache/spark:3.5.9
+    container_name: spark-worker-2-jeonghyejeong
+    user: root
+    depends_on:
+      - spark-master
+    command: >
+      /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker
+      spark://spark-master:7077
+      --cores 1 --memory 2G --webui-port 8080
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+    ports:
+      - "8083:8080"     # Worker 2 Web UI
+    volumes:
+      - ./jobs:/opt/spark-jobs
+      - ./data:/opt/spark-data
+    networks:
+      - spark-net
+
+networks:
+  spark-net:
+    name: spark-net-jeonghyejeong
+    driver: bridge
